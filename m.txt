@@ -1,0 +1,23 @@
+"""
+Gold price forecaster
+=====================
+Forecast the gold price N days ahead (a day, a week, a month, or a specific date).
+
+Usage
+-----
+    python gold_forecast.py --ahead week
+    python gold_forecast.py --ahead month
+    python gold_forecast.py --ahead 14            # 14 days after the last date in the CSV
+    python gold_forecast.py --ahead 2026-04-15    # a specific date
+    python gold_forecast.py                       # asks you interactively
+
+How it works (in plain words)
+-----------------------------
+1. Every row is a "snapshot of today". From it we build features (recent % changes,
+   volatility, how far price is from its moving averages).
+2. The model's job is: "given this snapshot, how much will the price change over
+   the next N days?"  We predict the CHANGE (%), not the raw price, because a tree
+   model can't predict prices higher than any it has seen in training (gold has
+   climbed from 26k to 150k+ in this dataset).
+3. Forecast price = last known price x (1 + predicted change).
+"""
